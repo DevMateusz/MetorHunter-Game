@@ -60,7 +60,19 @@ let speedRespMeteor = 1000;
 let Meteors = [];
 let Explosions = [];
 
+function playSound(path){
+    const sound = new Audio(path)
+    sound.volume = defaultVolume
+    sound.play();
+}
 
+const sound = {
+    explosion: "./sounds/explosion.wav",
+    heroDeath: "./sounds/hero-death.wav",
+    hit: "./sounds/hit.wav",
+    laserGunShot: "./sounds/laser-gun-shot.wav",
+    reload: "./sounds/reload.wav"
+}
 
 
 
@@ -236,10 +248,13 @@ function colisionMeteorPlayer() {
                meteor.y + 30*meteor.size*windowSize < playerY ||
                playerY + rocketHeightUsed < meteor.y)){
                 protection = true;
+                playSound(sound.explosion);
+                playSound(sound.hit);
                 createExplosion(meteor.x+30*meteor.size*windowSize/2, meteor.y+30*meteor.size*windowSize, meteor.size)
                         lives--;
                         Meteors.splice(i,1);
                         if(lives <= 0){
+                            playSound(sound.heroDeath);
                             setTimeout(function() {
                                 restartGame();
                             }, 200) 
@@ -253,10 +268,13 @@ function colisionMeteorPlayer() {
                 meteor.y + 30*meteor.size*windowSize < playerY+rocketHeightUsed/5*3 ||
                 playerY+rocketHeightUsed/5*3 + rocketHeightUsed/5 < meteor.y)){
                 protection = true;
+                playSound(sound.explosion);
+                playSound(sound.hit);
                 createExplosion(meteor.x+30*meteor.size*windowSize/2, meteor.y+30*meteor.size*windowSize, meteor.size)
                         lives--;
                         Meteors.splice(i,1);
                         if(lives <= 0){
+                            playSound(sound.heroDeath);
                             setTimeout(function() {
                                 restartGame();
                             }, 200) 
@@ -297,6 +315,7 @@ function restartGame() {
 
 function createBullet() {
     if (!numberAmmo <= 0) {
+        playSound(sound.laserGunShot)
         Bullets.push({
             x: playerX + rocketWidthUsed / 2 - bulletWidthUsed / 2,
             y: playerY + rocketHeightUsed / 2 - bulletWidthUsed,
@@ -352,6 +371,7 @@ function colisionMeteorBullet() {
             Meteors.forEach(function (meteor) {
                 if(bullet.x >= meteor.x && bullet.x <= meteor.x+30*meteor.size*windowSize){
                     if(bullet.y >= meteor.y && bullet.y <= meteor.y+30*meteor.size*windowSize){
+                        playSound(sound.explosion);
                         createExplosion(bullet.x, bullet.y, meteor.size);
                         Bullets.splice(i, 1);
                         Meteors.splice(ii, 1);
@@ -368,6 +388,7 @@ function colisionMeteorBullet() {
 
 
 function reloadAmmo() {
+    playSound(sound.reload)
     numberAmmo = 7;
     ammoStatus = true;
 }
