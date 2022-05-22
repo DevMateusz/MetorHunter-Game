@@ -1,0 +1,21 @@
+body{
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: gray;
+}
+canvas {
+    border: 5px solid white;
+    position: absolute;
+}
+
+#BG {
+ z-index: 2;
+}
+
+#mainBG {
+z-index: 1;
+}
